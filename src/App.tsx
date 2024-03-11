@@ -10,10 +10,13 @@ function App() {
   );
 
   const debounceRef = useRef<DebounceFunction>();
+  const abortControllerRef = useRef<AbortController>(new AbortController());
 
   const fetchNumber = async () => {
     setState("loading");
-    const response = await fetch("/api/number");
+    const response = await fetch("/api/number", {
+      signal: abortControllerRef.current.signal,
+    });
 
     if (response.ok) {
       const { data } = await response.json();
@@ -31,6 +34,8 @@ function App() {
       let timeoutId: number;
 
       return () => {
+        abortControllerRef.current.abort();
+        abortControllerRef.current = new AbortController();
         clearTimeout(timeoutId);
         timeoutId = setTimeout(fetchNumber, 1000);
       };
