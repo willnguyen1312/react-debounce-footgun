@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-const timeouts: number[] = [1000, 2000, 3000, NaN];
+const timeouts: number[] = [250, 500, 1000, NaN];
 
 const numbers: number[] = [1, 2, 3, 4];
 
@@ -12,7 +12,7 @@ export const handlers = [
 
     const hasError = Number.isNaN(timeout);
     await new Promise((resolve) =>
-      setTimeout(resolve, hasError ? 1000 : timeout)
+      setTimeout(resolve, hasError ? 500 : timeout)
     );
 
     return HttpResponse.json(

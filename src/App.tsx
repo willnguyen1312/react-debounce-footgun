@@ -15,6 +15,7 @@ function App() {
   useEffect(() => {
     return () => {
       // This is optional, it's up to specific use case to decide if it's necessary to abort the ongoing request
+      // when the component is unmounted.
       abortControllerRef.current.abort();
     };
   }, []);
@@ -47,7 +48,7 @@ function App() {
         abortControllerRef.current = new AbortController();
 
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(fetchNumber, 1000);
+        timeoutId = setTimeout(fetchNumber, 250);
       };
     })();
   }
