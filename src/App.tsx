@@ -9,6 +9,7 @@ function App() {
     "idle"
   );
 
+  const timeoutIdRef = useRef<number>();
   const debounceRef = useRef<DebounceFunction>();
   const abortControllerRef = useRef<AbortController>(new AbortController());
 
@@ -17,6 +18,7 @@ function App() {
       // This is optional, it's up to specific use case to decide if it's necessary to abort the ongoing request
       // when the component is unmounted.
       abortControllerRef.current.abort();
+      clearTimeout(timeoutIdRef.current);
     };
   }, []);
 
@@ -39,16 +41,14 @@ function App() {
 
   if (!debounceRef.current) {
     debounceRef.current = (() => {
-      let timeoutId: number;
-
       return () => {
         // We need to abort the previous request to increase the throughput of user's network
         // and let the server know that the previous request is no longer needed
         abortControllerRef.current.abort();
         abortControllerRef.current = new AbortController();
 
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(fetchNumber, 250);
+        clearTimeout(timeoutIdRef.current);
+        timeoutIdRef.current = setTimeout(fetchNumber, 250);
       };
     })();
   }
