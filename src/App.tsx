@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type DebounceFunction = () => void;
 
@@ -11,6 +11,13 @@ function App() {
 
   const debounceRef = useRef<DebounceFunction>();
   const abortControllerRef = useRef<AbortController>(new AbortController());
+
+  useEffect(() => {
+    return () => {
+      // This is optional, it's up to specific use case to decide if it's necessary to abort the ongoing request
+      abortControllerRef.current.abort();
+    };
+  }, []);
 
   const fetchNumber = async () => {
     setState("loading");
@@ -34,8 +41,11 @@ function App() {
       let timeoutId: number;
 
       return () => {
+        // We need to abort the previous request to increase the throughput of user's network
+        // and let the server know that the previous request is no longer needed
         abortControllerRef.current.abort();
         abortControllerRef.current = new AbortController();
+
         clearTimeout(timeoutId);
         timeoutId = setTimeout(fetchNumber, 1000);
       };
