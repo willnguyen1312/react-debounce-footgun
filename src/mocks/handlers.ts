@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-const timeouts: number[] = [2500, 5000, 7500, NaN];
+const timeouts: number[] = [1000, 2000, 3000, NaN];
 
 const numbers: number[] = [1, 2, 3, 4];
 
