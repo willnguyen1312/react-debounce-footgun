@@ -10,15 +10,22 @@ export const handlers = [
     const number = numbers[randomIndex];
     const timeout = timeouts[randomIndex];
 
+    const hasError = Number.isNaN(timeout);
+    await new Promise((resolve) =>
+      setTimeout(resolve, hasError ? 1000 : timeout)
+    );
+
     return HttpResponse.json(
       {
-        data: {
-          number,
-        },
+        data: hasError
+          ? undefined
+          : {
+              number,
+            },
       },
       {
-        status: Number.isNaN(timeout) ? 500 : 200,
-      },
+        status: hasError ? 500 : 200,
+      }
     );
   }),
 ];
