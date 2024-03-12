@@ -28,14 +28,14 @@ function App() {
   }, []);
 
   const fetchNumber = async () => {
-    if (!mountedRef.current) {
-      return;
-    }
-
     setState("loading");
     const response = await fetch("/api/number", {
       signal: abortControllerRef.current.signal,
     });
+
+    if (!mountedRef.current) {
+      return;
+    }
 
     if (response.ok) {
       const { data } = await response.json();
