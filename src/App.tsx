@@ -6,7 +6,7 @@ function App() {
   const [value, setValue] = useState<number>();
   const [error, setError] = useState<string>();
   const [state, setState] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
+    "idle",
   );
   const mountedRef = useRef<boolean>(false);
 

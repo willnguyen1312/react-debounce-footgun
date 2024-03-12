@@ -12,7 +12,7 @@ export const handlers = [
 
     const hasError = Number.isNaN(timeout);
     await new Promise((resolve) =>
-      setTimeout(resolve, hasError ? 500 : timeout)
+      setTimeout(resolve, hasError ? 500 : timeout),
     );
 
     return HttpResponse.json(
@@ -25,7 +25,7 @@ export const handlers = [
       },
       {
         status: hasError ? 500 : 200,
-      }
+      },
     );
   }),
 ];
